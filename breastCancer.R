@@ -25,7 +25,7 @@ columns = c("code",
             "class"
 )
             
-url = "Escritorio/BCW/breast-cancer-wisconsin.data"
+url = "https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data"
 df = read.csv(url, header = F, sep=",", col.names = columns)
 
 # GRAFICOS # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// #
