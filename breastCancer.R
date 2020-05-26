@@ -1,5 +1,8 @@
 # ATRIBUTOS # /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// #
 
+library(ggpubr)
+library(cowplot)
+
 # - code: Numero del codigo de la muestra
 # - clumpThickness: Grosor del grupo (1 - 10)
 # - unifCellSize: Tama√±o de celula uniforme (1 - 10)
@@ -33,8 +36,8 @@ df <- df[!(df$bareNuclei == "?"),]
 
 # Transformar los 2 y 4 a "B" y "M", respetivamente.
 df$class <- as.character(df$class)
-df$class[df$class == "2"] <- "B"
-df$class[df$class == "4"] <- "M"
+df$class[df$class == "2"] <- "Benign"
+df$class[df$class == "4"] <- "Malignant"
 
 # Transformar la columna "Bare Nuclei" de factor a numerico.
 df$bareNuclei <- as.numeric(df$bareNuclei)
@@ -63,7 +66,7 @@ title("Comparacion Marginal Adhesion")
 
 # ----------------------------------------------------------------------------------------------------------------------------------- #
 # Comparacion Tama√±o Celula Epitelial #
-boxplot(epithCellSize ~ class, data = df, xlab = "class", ylab = "epithCellSize±o", border = c("green", "red"), col = "lightgray")
+boxplot(epithCellSize ~ class, data = df, xlab = "class", ylab = "epithCellSize", border = c("green", "red"), col = "lightgray")
 title("Comparacion Single Epithelial Cell Size")
 
 # ----------------------------------------------------------------------------------------------------------------------------------- #
@@ -109,5 +112,84 @@ legend(1, .4, legend=diagnosis.prop.df[,1], cex = 0.7, fill = colors)
 class(df$bareNuclei)
 class(df$clumpThickness)
 
-# /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// #
-  
+# GRAFICOS2 # /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// #
+
+# ComparaciÛn Clump Thickness #
+boxplot.clumpThickness =  ggboxplot(data = df, x = "class", y = "clumpThickness", color = "class") + border()
+
+ydens = axis_canvas(boxplot.clumpThickness, axis = "y", coord_flip = TRUE) + geom_density(data = df, aes(x = clumpThickness, fill = class), alpha = 0.7, size = 0.2) + coord_flip()
+
+boxplot.clumpThickness = insert_yaxis_grob(boxplot.clumpThickness, ydens, grid::unit(.2, "null"), position = "right")
+ggdraw(boxplot.clumpThickness)
+
+# ----------------------------------------------------------------------------------------------------------------------------------- #
+# Comparacion Uniformity of Cell Size # 
+boxplot.unifCellSize =  ggboxplot(data = df, x = "class", y = "unifCellSize", color = "class") + border()
+
+ydens = axis_canvas(boxplot.unifCellSize, axis = "y", coord_flip = TRUE) + geom_density(data = df, aes(x = unifCellSize, fill = class), alpha = 0.7, size = 0.2) + coord_flip()
+
+boxplot.unifCellSize = insert_yaxis_grob(boxplot.unifCellSize, ydens, grid::unit(.2, "null"), position = "right")
+ggdraw(boxplot.unifCellSize)
+
+# ----------------------------------------------------------------------------------------------------------------------------------- #
+# Comparacion Uniformity of Cell Shape #
+boxplot.unifCellShape =  ggboxplot(data = df, x = "class", y = "unifCellShape", color = "class") + border()
+
+ydens = axis_canvas(boxplot.unifCellShape, axis = "y", coord_flip = TRUE) + geom_density(data = df, aes(x = unifCellShape, fill = class), alpha = 0.7, size = 0.2) + coord_flip()
+
+boxplot.unifCellShape = insert_yaxis_grob(boxplot.unifCellShape, ydens, grid::unit(.2, "null"), position = "right")
+ggdraw(boxplot.unifCellShape)
+
+# ----------------------------------------------------------------------------------------------------------------------------------- #
+# Comparacion Marginal Adhesion #
+boxplot.marginalAdhesion =  ggboxplot(data = df, x = "class", y = "marginalAdhesion", color = "class") + border()
+
+ydens = axis_canvas(boxplot.marginalAdhesion, axis = "y", coord_flip = TRUE) + geom_density(data = df, aes(x = marginalAdhesion, fill = class), alpha = 0.7, size = 0.2) + coord_flip()
+
+boxplot.marginalAdhesion = insert_yaxis_grob(boxplot.marginalAdhesion, ydens, grid::unit(.2, "null"), position = "right")
+ggdraw(boxplot.marginalAdhesion)
+
+# ----------------------------------------------------------------------------------------------------------------------------------- #
+# Comparacion Single Epithelial Cell Size #
+boxplot.epithCellSize =  ggboxplot(data = df, x = "class", y = "epithCellSize", color = "class") + border()
+
+ydens = axis_canvas(boxplot.epithCellSize, axis = "y", coord_flip = TRUE) + geom_density(data = df, aes(x = epithCellSize, fill = class), alpha = 0.7, size = 0.2) + coord_flip()
+
+boxplot.epithCellSize = insert_yaxis_grob(boxplot.epithCellSize, ydens, grid::unit(.2, "null"), position = "right")
+ggdraw(boxplot.epithCellSize)
+
+# ----------------------------------------------------------------------------------------------------------------------------------- #
+# Comparacion Bare Nuclei #
+boxplot.bareNuclei =  ggboxplot(data = df, x = "class", y = "bareNuclei", color = "class") + border()
+
+ydens = axis_canvas(boxplot.bareNuclei, axis = "y", coord_flip = TRUE) + geom_density(data = df, aes(x = bareNuclei, fill = class), alpha = 0.7, size = 0.2) + coord_flip()
+
+boxplot.bareNuclei = insert_yaxis_grob(boxplot.bareNuclei, ydens, grid::unit(.2, "null"), position = "right")
+ggdraw(boxplot.bareNuclei)
+
+# ----------------------------------------------------------------------------------------------------------------------------------- #
+# Comparacion Bland Chromatin #
+boxplot.blandChromatin =  ggboxplot(data = df, x = "class", y = "blandChromatin", color = "class") + border()
+
+ydens = axis_canvas(boxplot.blandChromatin, axis = "y", coord_flip = TRUE) + geom_density(data = df, aes(x = blandChromatin, fill = class), alpha = 0.7, size = 0.2) + coord_flip()
+
+boxplot.blandChromatin = insert_yaxis_grob(boxplot.blandChromatin, ydens, grid::unit(.2, "null"), position = "right")
+ggdraw(boxplot.blandChromatin)
+
+# ----------------------------------------------------------------------------------------------------------------------------------- #
+# Comparacion Normal Nucleoli #
+boxplot.normalNucleoli =  ggboxplot(data = df, x = "class", y = "normalNucleoli", color = "class") + border()
+
+ydens = axis_canvas(boxplot.normalNucleoli, axis = "y", coord_flip = TRUE) + geom_density(data = df, aes(x = normalNucleoli, fill = class), alpha = 0.7, size = 0.2) + coord_flip()
+
+boxplot.normalNucleoli = insert_yaxis_grob(boxplot.normalNucleoli, ydens, grid::unit(.2, "null"), position = "right")
+ggdraw(boxplot.normalNucleoli)
+
+# ----------------------------------------------------------------------------------------------------------------------------------- #
+# Comparacion Mitosis #
+boxplot.mitoses =  ggboxplot(data = df, x = "class", y = "mitoses", color = "class") + border()
+
+ydens = axis_canvas(boxplot.mitoses, axis = "y", coord_flip = TRUE) + geom_density(data = df, aes(x = mitoses, fill = class), alpha = 0.7, size = 0.2) + coord_flip()
+
+boxplot.mitoses = insert_yaxis_grob(boxplot.mitoses, ydens, grid::unit(.2, "null"), position = "right")
+ggdraw(boxplot.mitoses)
