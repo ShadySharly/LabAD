@@ -27,6 +27,7 @@ columns = c("code",
             
 url = "https://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/breast-cancer-wisconsin.data"
 df = read.csv(url, header = F, sep=",", col.names = columns)
+df <- df[!(df$bareNuclei == "?"),]
 
 # GRAFICOS # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// #
 
@@ -55,7 +56,7 @@ boxplot(epithCellSize ~ class, data = df, xlab = "Clase", ylab = "Tamaño", bord
 title("Comparacion Tamaño Celula Epitelial")
 
 # ----------------------------------------------------------------------------------------------------------------------------------- #
-# Comparacion Nucleo Desnudo # **
+# Comparacion Nucleo Desnudo #
 #boxplot(bareNuclei ~ class, data = df, xlab = "Clase", ylab = "Nucleo Desnudo", border = c("green", "red"), col = "lightgray")
 #title("Comparacion Nucleo Desnudo")
 
