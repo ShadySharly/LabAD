@@ -2,6 +2,7 @@
 
 library(ggpubr)
 library(cowplot)
+library(corrplot)
 
 # - code: Numero del codigo de la muestra
 # - clumpThickness: Grosor del grupo (1 - 10)
@@ -34,16 +35,25 @@ df = read.csv(url, header = F, sep=",", col.names = columns)
 # Eliminacion de Missing Values "?"
 df <- df[!(df$bareNuclei == "?"),]
 
+# CORRELACION # /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// #
+
+df$code <- NULL
+df$bareNuclei <- as.numeric(df$bareNuclei)
+#Se verifica si las variables siguen una distribución normal
+distribucion <- apply(df,2,shapiro.test)
+apply(df,2,hist)
+#Ninguna sigue una distribuición normal, se opta por un test no paramétrico
+df.cor = cor(df, method = 'spearman')
+
+corrplot(df.cor, method = 'ellipse')
+title("Matriz de Correlacion")
+
+# GRAFICOS # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// #
+
 # Transformar los 2 y 4 a "B" y "M", respetivamente.
 df$class <- as.character(df$class)
 df$class[df$class == "2"] <- "Benign"
 df$class[df$class == "4"] <- "Malignant"
-
-# Transformar la columna "Bare Nuclei" de factor a numerico.
-df$bareNuclei <- as.numeric(df$bareNuclei)
-df.cor = cor(df)
-
-# GRAFICOS # //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// #
 
 # Comparacion Grosor del Grupo # 
 boxplot(clumpThickness ~ class, data = df, xlab = "class", ylab = "clumpThickness", border = c("green", "red"), col = "lightgray")
@@ -193,3 +203,4 @@ ydens = axis_canvas(boxplot.mitoses, axis = "y", coord_flip = TRUE) + geom_densi
 
 boxplot.mitoses = insert_yaxis_grob(boxplot.mitoses, ydens, grid::unit(.2, "null"), position = "right")
 ggdraw(boxplot.mitoses)
+
